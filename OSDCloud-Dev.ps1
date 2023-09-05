@@ -49,6 +49,7 @@ $AutopilotOOBEJson | Out-File -FilePath "C:\ProgramData\OSDeploy\OSDeploy.Autopi
 #================================================
 Write-Host -ForegroundColor Green "Create C:\Windows\Setup\Scripts\SetupComplete.cmd"
 $SetupCompleteCMD = @'
+set LOCALAPPDATA=%USERPROFILE%AppDataLocal
 powershell.exe -Command Set-ExecutionPolicy RemoteSigned -Force
 powershell.exe -Command "& {IEX (IRM https://raw.githubusercontent.com/mainsails/OSD/main/OSDCloud-OOBE.ps1)}"
 '@
