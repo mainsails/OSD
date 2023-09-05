@@ -7,13 +7,13 @@ if ((Get-MyComputerModel) -match 'Virtual') {
 }
 
 $Params = @{
-    OSName       = 'Windows 11 22H2 x64'
-    OSLanguage   = 'en-gb'
-    OSEdition    = 'Pro'
-    OSActivation = 'Retail'
-    OSBuild      = "22H2"
-    ZTI          = $true
-    Firmware     = $false
+    OSVersion  = 'Windows 11'
+    OSBuild    = '22H2'
+    OSEdition  = 'Pro'
+    OSLanguage = 'en-gb'
+    OSLicense  = 'Retail'
+    ZTI        = $true
+    Firmware   = $false
 }
 Start-OSDCloud @Params
 
