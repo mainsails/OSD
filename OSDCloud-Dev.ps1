@@ -1,19 +1,28 @@
 #================================================
-#  [PreOS] Params and Start-OSDCloud
+#   [PreOS] Update Module
 #================================================
 if ((Get-MyComputerModel) -match 'Virtual') {
     Write-Host  -ForegroundColor Green "Setting Display Resolution to 1600x"
     Set-DisRes 1600
 }
 
+Write-Host -ForegroundColor Green "Updating OSD PowerShell Module"
+Install-Module OSD -Force
+
+Write-Host  -ForegroundColor Green "Importing OSD PowerShell Module"
+Import-Module OSD -Force   
+
+#=======================================================================
+#   [OS] Params and Start-OSDCloud
+#=======================================================================
 $Params = @{
-    OSVersion  = 'Windows 11'
-    OSBuild    = '22H2'
-    OSEdition  = 'Pro'
-    OSLanguage = 'en-gb'
-    OSLicense  = 'Retail'
-    ZTI        = $true
-    Firmware   = $false
+    OSVersion = "Windows 11"
+    OSBuild = "22H2"
+    OSEdition = "Pro"
+    OSLanguage = "en-us"
+    OSLicense = "Retail"
+    ZTI = $true
+    Firmware = $false
 }
 Start-OSDCloud @Params
 
@@ -29,6 +38,35 @@ $OOBEDeployJson = @'
     "Autopilot":  {
                       "IsPresent":  false
                   },
+    "RemoveAppx":  [
+                    "MicrosoftTeams",
+                    "Microsoft.BingWeather",
+                    "Microsoft.BingNews",
+                    "Microsoft.GamingApp",
+                    "Microsoft.GetHelp",
+                    "Microsoft.Getstarted",
+                    "Microsoft.Messaging",
+                    "Microsoft.MicrosoftOfficeHub",
+                    "Microsoft.MicrosoftSolitaireCollection",
+                    "Microsoft.MicrosoftStickyNotes",
+                    "Microsoft.MSPaint",
+                    "Microsoft.People",
+                    "Microsoft.PowerAutomateDesktop",
+                    "Microsoft.StorePurchaseApp",
+                    "Microsoft.Todos",
+                    "microsoft.windowscommunicationsapps",
+                    "Microsoft.WindowsFeedbackHub",
+                    "Microsoft.WindowsMaps",
+                    "Microsoft.WindowsSoundRecorder",
+                    "Microsoft.Xbox.TCUI",
+                    "Microsoft.XboxGameOverlay",
+                    "Microsoft.XboxGamingOverlay",
+                    "Microsoft.XboxIdentityProvider",
+                    "Microsoft.XboxSpeechToTextOverlay",
+                    "Microsoft.YourPhone",
+                    "Microsoft.ZuneMusic",
+                    "Microsoft.ZuneVideo"
+                   ],
     "UpdateDrivers":  {
                           "IsPresent":  true
                       },
@@ -45,29 +83,36 @@ $OOBEDeployJson | Out-File -FilePath "C:\ProgramData\OSDeploy\OSDeploy.OOBEDeplo
 #================================================
 #  [PostOS] AutopilotOOBE Configuration Staging
 #================================================
+Write-Host -ForegroundColor Green "Define Computername:"
+$Serial = Get-WmiObject Win32_bios | Select-Object -ExpandProperty SerialNumber
+$TargetComputername = $Serial.Substring(4,3)
+
+$AssignedComputerName = "AkosCloud-$TargetComputername"
+Write-Host -ForegroundColor Red $AssignedComputerName
+Write-Host ""
+
 Write-Host -ForegroundColor Green "Create C:\ProgramData\OSDeploy\OSDeploy.AutopilotOOBE.json"
-$AutopilotOOBEJson = @'
+$AutopilotOOBEJson = @"
 {
+    "AssignedComputerName" : "$AssignedComputerName",
+    "AddToGroup":  "AADGroupX",
     "Assign":  {
                    "IsPresent":  true
                },
-    "GroupTag":  "Workstation",
-    "GroupTagOptions":  [
-                            "Workstation",
-                            "Development"
-                        ],
+    "GroupTag":  "GroupTagXXX",
     "Hidden":  [
                    "AddToGroup",
-                   "AssignedComputerName",
                    "AssignedUser",
-                   "PostAction"
+                   "PostAction",
+                   "GroupTag",
+                   "Assign"
                ],
     "PostAction":  "Quit",
     "Run":  "NetworkingWireless",
-    "Docs":  "https://autopilotoobe.osdeploy.com/",
-    "Title":  "Autopilot Registration"
+    "Docs":  "https://google.com/",
+    "Title":  "Autopilot Manual Register"
 }
-'@
+"@
 
 If (!(Test-Path "C:\ProgramData\OSDeploy")) {
     New-Item "C:\ProgramData\OSDeploy" -ItemType Directory -Force | Out-Null
@@ -75,13 +120,33 @@ If (!(Test-Path "C:\ProgramData\OSDeploy")) {
 $AutopilotOOBEJson | Out-File -FilePath "C:\ProgramData\OSDeploy\OSDeploy.AutopilotOOBE.json" -Encoding ascii -Force
 
 #================================================
+#  [PostOS] AutopilotOOBE CMD Command Line
+#================================================
+Write-Host -ForegroundColor Green "Create C:\Windows\System32\OOBE.cmd"
+$OOBECMD = @'
+PowerShell -NoL -Com Set-ExecutionPolicy RemoteSigned -Force
+Set Path = %PATH%;C:\Program Files\WindowsPowerShell\Scripts
+Start /Wait PowerShell -NoL -C Install-Module AutopilotOOBE -Force -Verbose
+Start /Wait PowerShell -NoL -C Install-Module OSD -Force -Verbose
+Start /Wait PowerShell -NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/AkosBakos/OSDCloud/main/Set-KeyboardLanguage.ps1
+Start /Wait PowerShell -NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/AkosBakos/OSDCloud/main/Install-EmbeddedProductKey.ps1
+Start /Wait PowerShell -NoL -C Invoke-WebPSScript https://check-autopilotprereq.osdcloud.ch
+Start /Wait PowerShell -NoL -C Invoke-WebPSScript https://start-autopilotoobe.osdcloud.ch
+Start /Wait PowerShell -NoL -C Start-OOBEDeploy
+Start /Wait PowerShell -NoL -C Invoke-WebPSScript https://tpm.osdcloud.ch
+Start /Wait PowerShell -NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/AkosBakos/OSDCloud/main/Lenovo_BIOS_Settings.ps1
+Start /Wait PowerShell -NoL -C Invoke-WebPSScript https://cleanup.osdcloud.ch
+Start /Wait PowerShell -NoL -C Restart-Computer -Force
+'@
+$OOBECMD | Out-File -FilePath 'C:\Windows\System32\OOBE.cmd' -Encoding ascii -Force
+
+#================================================
 #  [PostOS] SetupComplete CMD Command Line
 #================================================
 Write-Host -ForegroundColor Green "Create C:\Windows\Setup\Scripts\SetupComplete.cmd"
 $SetupCompleteCMD = @'
 powershell.exe -Command Set-ExecutionPolicy RemoteSigned -Force
-#powershell.exe -Command "& {IEX (IRM https://raw.githubusercontent.com/mainsails/OSD/main/OSDCloud-OOBE.ps1)}"
-powershell.exe -Command "& {IEX (IRM https://gist.githubusercontent.com/AkosBakos/11ce101b72ee375cf15f7a8903e370e4/raw/oobetasks.ps1)}"
+powershell.exe -Command "& {IEX (IRM oobetasks.osdcloud.ch)}"
 '@
 $SetupCompleteCMD | Out-File -FilePath 'C:\Windows\Setup\Scripts\SetupComplete.cmd' -Encoding ascii -Force
 
