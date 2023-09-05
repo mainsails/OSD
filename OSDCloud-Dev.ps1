@@ -1,16 +1,19 @@
-Start-Sleep -Seconds 10
-Write-Host -ForegroundColor Green "Starting..."
 #================================================
 #  [PreOS] Params and Start-OSDCloud
 #================================================
+if ((Get-MyComputerModel) -match 'Virtual') {
+    Write-Host  -ForegroundColor Green "Setting Display Resolution to 1600x"
+    Set-DisRes 1600
+}
+
 $Params = @{
-    OSVersion = "Windows 11"
-    OSBuild = "22H2"
-    OSEdition = "Pro"
-    OSLanguage = "en-gb"
-    OSLicense = "Retail"
-    ZTI = $true
-    Firmware = $false
+    OSName       = 'Windows 11 22H2 x64'
+    OSLanguage   = 'en-gb'
+    OSEdition    = 'Pro'
+    OSActivation = 'Retail'
+    OSBuild      = "22H2"
+    ZTI          = $true
+    Firmware     = $false
 }
 Start-OSDCloud @Params
 
@@ -42,36 +45,29 @@ $OOBEDeployJson | Out-File -FilePath "C:\ProgramData\OSDeploy\OSDeploy.OOBEDeplo
 #================================================
 #  [PostOS] AutopilotOOBE Configuration Staging
 #================================================
-Write-Host -ForegroundColor Green "Define Computername:"
-$Serial = Get-WmiObject Win32_bios | Select-Object -ExpandProperty SerialNumber
-$TargetComputername = $Serial.Substring(4,3)
-
-$AssignedComputerName = "AkosCloud-$TargetComputername"
-Write-Host -ForegroundColor Red $AssignedComputerName
-Write-Host ""
-
 Write-Host -ForegroundColor Green "Create C:\ProgramData\OSDeploy\OSDeploy.AutopilotOOBE.json"
-$AutopilotOOBEJson = @"
+$AutopilotOOBEJson = @'
 {
-    "AssignedComputerName" : "$AssignedComputerName",
-    "AddToGroup":  "AADGroupX",
     "Assign":  {
                    "IsPresent":  true
                },
-    "GroupTag":  "GroupTagXXX",
+    "GroupTag":  "Workstation",
+    "GroupTagOptions":  [
+                            "Workstation",
+                            "Development"
+                        ],
     "Hidden":  [
                    "AddToGroup",
+                   "AssignedComputerName",
                    "AssignedUser",
-                   "PostAction",
-                   "GroupTag",
-                   "Assign"
+                   "PostAction"
                ],
     "PostAction":  "Quit",
     "Run":  "NetworkingWireless",
-    "Docs":  "https://google.com/",
-    "Title":  "Autopilot Manual Register"
+    "Docs":  "https://autopilotoobe.osdeploy.com/",
+    "Title":  "Autopilot Registration"
 }
-"@
+'@
 
 If (!(Test-Path "C:\ProgramData\OSDeploy")) {
     New-Item "C:\ProgramData\OSDeploy" -ItemType Directory -Force | Out-Null
