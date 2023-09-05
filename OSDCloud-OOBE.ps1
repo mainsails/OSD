@@ -6,6 +6,6 @@ If(!(Test-Path -Path $scriptFolderPath)) {
 }
 
 Install-Module AutopilotOOBE -Force -Verbose
-Start-AutopilotOOBE -Wait
+Start-AutopilotOOBE -Verbose
 
 Stop-Transcript
