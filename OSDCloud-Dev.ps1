@@ -1,3 +1,5 @@
+Start-Sleep -Seconds 10
+Write-Host -ForegroundColor Green "Starting..."
 #================================================
 #  [PreOS] Params and Start-OSDCloud
 #================================================
