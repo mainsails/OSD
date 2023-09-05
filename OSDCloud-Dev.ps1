@@ -14,6 +14,7 @@ Start-OSDCloud @Params
 # Create C:\Windows\Setup\Scripts\SetupComplete.cmd (runs in OOBE)
 Write-Host -ForegroundColor Green "Create C:\Windows\Setup\Scripts\SetupComplete.cmd"
 $SetupCompleteCMD = @'
+set LOCALAPPDATA=%USERPROFILE%\AppData\Local
 powershell.exe -ExecutionPolicy Bypass -Command "& {IEX (IRM https://raw.githubusercontent.com/mainsails/OSD/main/OSDCloud-OOBE.ps1)}"
 '@
 $SetupCompleteCMD | Out-File -FilePath 'C:\Windows\Setup\Scripts\SetupComplete.cmd' -Encoding ascii -Force
