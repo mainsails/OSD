@@ -1,4 +1,7 @@
 $scriptFolderPath = "$env:SystemDrive\OSDCloud\testing"
+If(!(Test-Path -Path $scriptFolderPath)) {
+    New-Item -Path $scriptFolderPath -ItemType Directory -Force | Out-Null
+}
 
 Write-Host -ForegroundColor DarkGray "Installing OSD PS Module"
 Start-Process PowerShell -ArgumentList "-NoL -C Install-Module OSD -Force -Verbose" -Wait
