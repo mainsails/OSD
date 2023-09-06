@@ -7,7 +7,7 @@ $Params = @{
     Title           = 'Autopilot Registration'
     GroupTag        = 'Workstation'
     GroupTagOptions = 'Workstation','Shared','Kiosk-LilieTS'
-    Hidden          = 'AddToGroup','AssignedComputerName','AssignedUser','PostAction'
+    Hidden          = 'AddToGroup','Assign','AssignedComputerName','AssignedUser','PostAction'
     Assign          = $true
     Run             = 'NetworkingWireless'
 }
