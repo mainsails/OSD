@@ -23,25 +23,15 @@ $SetupCompleteCMD | Out-File -FilePath 'C:\Windows\Setup\Scripts\SetupComplete.c
 
 $SetCommand = @'
 @echo off
-
-:: Set the PowerShell Execution Policy
-PowerShell -NoL -Com Set-ExecutionPolicy RemoteSigned -Force
-
-:: Add PowerShell Scripts to the Path
-set path=%path%;C:\Program Files\WindowsPowerShell\Scripts
-
-:: Open and Minimize a PowerShell instance just in case
-start PowerShell -NoL -W Mi
-
-:: Install the latest AutopilotOOBE Module
-start "Install-Module AutopilotOOBE" /wait PowerShell -NoL -C Install-Module AutopilotOOBE -Force -Verbose
-
-:: Start-AutopilotOOBE
-start "Start-AutopilotOOBE" PowerShell -NoL -C Start-AutopilotOOBE
-:: The next line is how you would apply a CustomProfile
-exit
+PowerShell.exe -Command "& { Invoke-Expression -Command (Invoke-RestMethod -Uri 'https://raw.githubusercontent.com/mainsails/OSD/main/OSDPad/Autopilot.ps1') }"
 '@
-$SetCommand | Out-File -FilePath "C:\Windows\Autopilot.cmd" -Encoding ascii -Force
+$SetCommand | Out-File -FilePath "C:\Windows\System32\Autopilot.cmd" -Encoding ascii -Force
+
+$SetCommand = @'
+@echo off
+PowerShell.exe -Command "& { Start-OSDPad -RepoOwner mainsails -RepoName OSD -RepoFolder OSDPad }"
+'@
+$SetCommand | Out-File -FilePath "C:\Windows\System32\tech.cmd" -Encoding ascii -Force
 
 ######
 
