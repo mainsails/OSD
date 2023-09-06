@@ -1,7 +1,7 @@
 # Build OSDCloud Workspace
 
 # Define variables
-$WorkspacePath = 'C:\OSDCloud\Workspace-Dev'
+$WorkspacePath = 'C:\OSDCloud\Workspace'
 
 # Create OSDCloud Workspace
 New-OSDCloudWorkspace -WorkspacePath $WorkspacePath
