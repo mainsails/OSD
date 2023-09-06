@@ -31,7 +31,7 @@ $SetCommand = @'
 @echo off
 PowerShell.exe -Command "& { Start-OSDPad -RepoOwner mainsails -RepoName OSD -RepoFolder OSDPad }"
 '@
-$SetCommand | Out-File -FilePath "C:\Windows\System32\tech.cmd" -Encoding ascii -Force
+$SetCommand | Out-File -FilePath "C:\Windows\System32\Tech.cmd" -Encoding ascii -Force
 
 ######
 
