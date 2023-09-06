@@ -1,7 +1,7 @@
 # Example OOBE process
 
 $Params = @{
-    Autopilot = $true
+    Autopilot = $false
     RemoveAppx = "CommunicationsApps","OfficeHub","People","Skype","Solitaire","Xbox","ZuneMusic","ZuneVideo"
     UpdateDrivers = $true
     UpdateWindows = $true
