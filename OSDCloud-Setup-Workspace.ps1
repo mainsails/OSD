@@ -8,3 +8,6 @@ New-OSDCloudWorkspace -WorkspacePath $WorkspacePath
 
 # Build WinPE
 Edit-OSDCloudWinPE -CloudDriver Dell,IntelNet,USB -StartURL 'https://raw.githubusercontent.com/mainsails/OSD/main/OSDCloud-WinPE.ps1'
+
+# Create OSD Cloud ISO
+New-OSDCloudISO
