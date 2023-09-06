@@ -38,15 +38,15 @@ New-ItemProperty -Path $KeyPath -Name Deploy-ChassisType -PropertyType String -V
 
 # Move OSDCloud Logs
 If (Test-Path -Path 'C:\OSDCloud\Logs') {
-    Move-Item 'C:\OSDCloud\Logs' -Destination "$env:ProgramData\Logs\Management" -Force
+    Move-Item 'C:\OSDCloud\Logs\*' -Destination "$env:ProgramData\Logs\Management" -Force -Verbose
 }
 
 # Cleanup directories
 If (Test-Path -Path 'C:\OSDCloud') {
-    Remove-Item -Path 'C:\OSDCloud' -Recurse -Force
+    Remove-Item -Path 'C:\OSDCloud' -Recurse -Force -Verbose
 }
 If (Test-Path -Path 'C:\Drivers') {
-    Remove-Item 'C:\Drivers' -Recurse -Force
+    Remove-Item 'C:\Drivers' -Recurse -Force -Verbose
 }
 
 # Eject CD
