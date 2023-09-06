@@ -1,11 +1,11 @@
 # Start OSDCloud
 Write-Host -ForegroundColor Green "Start OSDCloud"
 $Params = @{
-    OSVersion  = "Windows 11"
-    OSBuild    = "22H2"
-    OSEdition  = "Pro"
-    OSLanguage = "en-gb"
-    OSLicense  = "Retail"
+    OSVersion  = 'Windows 11'
+    OSBuild    = '22H2'
+    OSEdition  = 'Pro'
+    OSLanguage = 'en-gb'
+    OSLicense  = 'Retail'
     ZTI        = $true
     Firmware   = $false
 }
