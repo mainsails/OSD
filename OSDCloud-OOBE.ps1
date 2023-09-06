@@ -49,5 +49,8 @@ If (Test-Path -Path 'C:\Drivers') {
     Remove-Item 'C:\Drivers' -Recurse -Force
 }
 
+# Eject CD
+Start-EjectCD
+
 # Stop logging
 Stop-Transcript
