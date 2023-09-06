@@ -14,7 +14,8 @@ Start-OSDCloud @Params
 # Create C:\Windows\Setup\Scripts\SetupComplete.cmd (runs in OOBE)
 Write-Host -ForegroundColor Green "Create C:\Windows\Setup\Scripts\SetupComplete.cmd"
 $SetupCompleteCMD = @'
-PowerShell.exe -ExecutionPolicy Bypass -Command "& { Invoke-Expression -Command (Invoke-RestMethod -Uri 'https://raw.githubusercontent.com/mainsails/OSD/main/OSDCloud-OOBE.ps1') }"
+PowerShell.exe -Command Set-ExecutionPolicy RemoteSigned -Force
+PowerShell.exe -Command "& { Invoke-Expression -Command (Invoke-RestMethod -Uri 'https://raw.githubusercontent.com/mainsails/OSD/main/OSDCloud-OOBE.ps1') }"
 '@
 $SetupCompleteCMD | Out-File -FilePath 'C:\Windows\Setup\Scripts\SetupComplete.cmd' -Encoding ascii -Force
 
