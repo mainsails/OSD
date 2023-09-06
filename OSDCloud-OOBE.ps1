@@ -36,5 +36,18 @@ function Get-ChassisType {
 }
 New-ItemProperty -Path $KeyPath -Name Deploy-ChassisType -PropertyType String -Value $(Get-ChassisType) -Force -Verbose
 
+# Move OSDCloud Logs
+If (Test-Path -Path 'C:\OSDCloud\Logs') {
+    Move-Item 'C:\OSDCloud\Logs' -Destination "$env:ProgramData\Logs\Management" -Force
+}
+
+# Cleanup directories
+If (Test-Path -Path 'C:\OSDCloud') {
+    Remove-Item -Path 'C:\OSDCloud' -Recurse -Force
+}
+If (Test-Path -Path 'C:\Drivers') {
+    Remove-Item 'C:\Drivers' -Recurse -Force
+}
+
 # Stop logging
 Stop-Transcript
