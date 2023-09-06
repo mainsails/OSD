@@ -2,7 +2,7 @@
 Start-Transcript -Path "$env:ProgramData\Logs\Management\$(Get-Date -Format yyyy-MM-dd-HHmm)-Deploy-OOBE.log"
 
 # Create BHFT key if it does not exist
-$KeyPath = "HKLM:\SOFTWARE\BHFT1"
+$KeyPath = 'HKLM:\SOFTWARE\BHFT'
 If (-not(Test-Path -Path $KeyPath)) {
     New-Item -Path $KeyPath -Force -Verbose
 }
