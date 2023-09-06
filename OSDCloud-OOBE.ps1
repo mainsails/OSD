@@ -32,7 +32,7 @@ function Get-ChassisType {
             return 'Server'
         }
         Default {
-            Write-Warning ("ChassisTypes is {0}" -f $ChassisTypes)
+            return 'Unknown'
         }
     }
 }
