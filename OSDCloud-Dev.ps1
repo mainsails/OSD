@@ -18,7 +18,7 @@ PowerShell.exe -ExecutionPolicy Bypass -Command "& { Invoke-Expression -Command 
 '@
 $SetupCompleteCMD | Out-File -FilePath 'C:\Windows\Setup\Scripts\SetupComplete.cmd' -Encoding ascii -Force
 
-# Restart Computer in 5 seconds
-Write-Host  -ForegroundColor Green "Restart computer in 5 seconds"
-Start-Sleep -Seconds 20
+# Restart Computer in 10 seconds
+Write-Host  -ForegroundColor Green "Restart computer in 10 seconds"
+Start-Sleep -Seconds 10
 wpeutil reboot
