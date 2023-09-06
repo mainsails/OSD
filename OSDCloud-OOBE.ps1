@@ -17,7 +17,7 @@ New-ItemProperty -Path $KeyPath -Name Deploy-OSVersion -PropertyType String -Val
 # Add device ChassisType
 
 function Get-ChassisType {
-    [int[]]$ChassisTypes = Get-CimInstance Win32_SystemEnclosure | Select-Object -ExpandProperty ChassisTypes
+    $ChassisTypes = Get-CimInstance Win32_SystemEnclosure | Select-Object -ExpandProperty ChassisTypes
     switch ($ChassisTypes) {
         { $_ -in 3, 4, 5, 6, 7, 15, 16 } {
             return 'Desktop'
