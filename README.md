@@ -1,7 +1,7 @@
 # OSDCloud
 
 - Create Template : [OSDCloud-Setup-Template.ps1](OSDCloud-Setup-Template.ps1)
-- Create Workspace : [OSDCloud-Setup-Workspace.ps1](OSDCloud-Setup-Template.ps1)
+- Create Workspace : [OSDCloud-Setup-Workspace.ps1](OSDCloud-Setup-Workspace.ps1)
   - The WinPE image runs : [OSDCloud-WinPE.ps1](OSDCloud-WinPE.ps1)
     - Start OSDCloud
     - Creates `SetupComplete.cmd` : Runs during OOBE
