@@ -37,6 +37,6 @@ $SetCommand | Out-File -FilePath "C:\Windows\System32\Tech.cmd" -Encoding ascii 
 
 
 # Restart Computer in 10 seconds
-Write-Host  -ForegroundColor Green "Restart computer in 10 seconds"
+Write-Host  -ForegroundColor Green "Restarting computer in 10 seconds"
 Start-Sleep -Seconds 10
 wpeutil reboot
