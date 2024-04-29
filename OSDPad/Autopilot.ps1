@@ -6,7 +6,7 @@ Import-Module AutopilotOOBE -Force
 $Params = @{
     Title           = 'Autopilot Registration'
     GroupTag        = 'Workstation'
-    GroupTagOptions = 'Workstation','Shared','Kiosk-LilieTS'
+    GroupTagOptions = 'Workstation','Shared'
     Hidden          = 'AddToGroup','Assign','AssignedComputerName','AssignedUser','PostAction'
     Assign          = $true
     Run             = 'NetworkingWireless'
